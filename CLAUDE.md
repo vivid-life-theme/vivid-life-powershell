@@ -4,19 +4,21 @@ PowerShell port of the Vivid Life Theme design system (4 flavors × 6 variants =
 
 ## Key Config Files
 
-| File                                       | Purpose                                                          |
-| ------------------------------------------ | ---------------------------------------------------------------- |
-| `build.mjs`                                | Generates `themes/*.ps1` from `@vivid-life-theme/design-system`  |
-| `.claude/learnings.md`                     | Auto-collected corrections/observations from config skill runs   |
-| `CLAUDE.md`                                | Project instructions, loaded every message                       |
-| `.claude/settings.json`                    | Permissions, hooks, environment variables                        |
-| `.claude/skills/vivid-life-theme/SKILL.md` | Fetches the design-system tokens/foundation for building themes  |
-| `.githooks/pre-commit`                     | Runs `scripts/sync-config-table.sh` before each commit           |
-| `.github/workflows/claude-code-review.yml` | Auto-review on PR open/update                                    |
-| `.github/workflows/claude.yml`             | `@claude` mention trigger in issues/PRs                          |
-| `.gitignore`                               | Git ignore patterns                                              |
-| `package.json`                             | npm scripts (`build`, `test`, `format`) and design-system devDep |
-| `scripts/sync-config-table.sh`             | Keeps this Key Config Files table in sync with the filesystem    |
+| File                                                  | Purpose                                                          |
+| ----------------------------------------------------- | ---------------------------------------------------------------- |
+| `build.mjs`                                           | Generates `themes/*.ps1` from `@vivid-life-theme/design-system`  |
+| `.claude/learnings.md`                                | Auto-collected corrections/observations from config skill runs   |
+| `CLAUDE.md`                                           | Project instructions, loaded every message                       |
+| `.claude/settings.json`                               | Permissions, hooks, environment variables                        |
+| `.claude/skills/release/SKILL.md`                     | `/release` skill: version bump → CHANGELOG → tag → push          |
+| `.claude/skills/vivid-life-theme/SKILL.md`            | Fetches the design-system tokens/foundation for building themes  |
+| `.githooks/pre-commit`                                | Runs `scripts/sync-config-table.sh` before each commit           |
+| `.github/workflows/claude-code-review.yml`            | Auto-review on PR open/update                                    |
+| `.github/workflows/claude.yml`                        | `@claude` mention trigger in issues/PRs                          |
+| `.github/workflows/publish-to-powershell-gallery.yml` | `Publish-Module` on `v*` tag push (needs `PSGALLERY_API_KEY`)    |
+| `.gitignore`                                          | Git ignore patterns                                              |
+| `package.json`                                        | npm scripts (`build`, `test`, `format`) and design-system devDep |
+| `scripts/sync-config-table.sh`                        | Keeps this Key Config Files table in sync with the filesystem    |
 
 <!-- cc-config: last-optimize-run: 2026-08-28 HEAD -->
 
@@ -39,7 +41,7 @@ Two install paths generated from the same foundation tokens — keep them in syn
 - Both require PowerShell 7.2+ (`$PSStyle`). Standalone scripts must be dot-sourced (not `&`-invoked) to run in the caller's scope; the module keeps helpers module-private automatically (only `Set-VividLifeTheme` is exported).
 - PowerShell 7.2 bundles PSReadLine 2.1.0, which rejects `ListPrediction`/`ListPredictionSelected` (added in 2.2.0) — both templates send those in a separate try/catch-wrapped call so older PSReadLine still gets full core coloring. `$PSStyle.Formatting`/`.FileInfo` assignments are similarly wrapped per-property since the member set has grown past 7.2. Verify any template change against a real `pwsh` (available in this environment), not just unit tests — the unit tests check string shape, not runtime validity.
 - The module's GUID (`MODULE_GUID` in `src/module-template.mjs`) is permanent — never regenerate it, that would make the PowerShell Gallery treat a republish as a different module.
-- Not yet published to the PowerShell Gallery — publishing needs the maintainer's own API key (`Publish-Module -NuGetApiKey ...`), not something to attempt from here.
+- Not yet published to the PowerShell Gallery. Publishing is handled by the `release` skill (`/release`): it bumps the version, updates `CHANGELOG.md`, tags, and pushes; the tag push triggers `.github/workflows/publish-to-powershell-gallery.yml`, which runs `Publish-Module` in CI using the `PSGALLERY_API_KEY` repo secret. Never attempt `Publish-Module` directly from here — it needs the maintainer's own API key and is a one-way action.
 
 ## References
 

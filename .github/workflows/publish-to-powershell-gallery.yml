@@ -1,0 +1,22 @@
+name: Publish to PowerShell Gallery
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - shell: pwsh
+        run: Test-ModuleManifest -Path ./VividLifePowerShell/VividLifePowerShell.psd1
+      - shell: pwsh
+        run: |
+          Publish-Module -Path ./VividLifePowerShell -Repository PSGallery -NuGetApiKey $env:PSGALLERY_API_KEY
+        env:
+          PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
