@@ -29,27 +29,49 @@ Install-Module -Name PSReadLine -MinimumVersion 2.2.0 -Force -SkipPublisherCheck
 
 ## Install
 
-### Manual
+### PowerShell Gallery (module — not yet published)
+
+```powershell
+Install-Module -Name VividLifePowerShell -Scope CurrentUser
+```
+
+Add to your `$PROFILE` (create one first if you don't have one: `if (-not (Test-Path $PROFILE)) { New-Item -ItemType File -Path $PROFILE -Force }`):
+
+```powershell
+Import-Module VividLifePowerShell
+Set-VividLifeTheme -Flavor Midnight -Variant Purple
+```
+
+`Set-VividLifeTheme` with no arguments applies the default (Midnight · Purple). Flavor and variant names tab-complete.
+
+### From a local clone (module)
+
+Until the module is published, import it directly from a clone:
 
 ```powershell
 git clone https://github.com/vivid-life-theme/vivid-life-powershell.git
 ```
 
-Dot-source one theme from your `$PROFILE`. If you don't have a profile yet, create one first:
+```powershell
+Import-Module /path/to/vivid-life-powershell/VividLifePowerShell/VividLifePowerShell.psd1
+Set-VividLifeTheme -Flavor Midnight -Variant Purple
+```
+
+Add the same two lines to your `$PROFILE` to apply on every session.
+
+### Standalone script (no module)
+
+If you'd rather not depend on a module, dot-source one theme script directly instead:
 
 ```powershell
 if (-not (Test-Path $PROFILE)) { New-Item -ItemType File -Path $PROFILE -Force }
 ```
 
-Then add this line to it:
-
 ```powershell
 . /path/to/vivid-life-powershell/themes/vivid-life-midnight-purple.ps1
 ```
 
-Dot-sourcing (not `&`-invoking) is required — the script sets `$PSStyle` and PSReadLine options in your current session scope.
-
-Default: **Midnight · Purple** (`vivid-life-midnight-purple`), matching the design system's overall default.
+Dot-sourcing (not `&`-invoking) is required — the script sets `$PSStyle` and PSReadLine options in your current session scope. Default: **Midnight · Purple** (`vivid-life-midnight-purple`), matching the design system's overall default.
 
 ## Scope
 
@@ -63,11 +85,11 @@ PowerShell's theme-able surface is `Set-PSReadLineOption -Colors` (shell syntax 
 
 ```bash
 npm install
-npm run build   # regenerate themes/*.ps1 from the design-system tokens
-npm test        # verify the mapping
+npm run build   # regenerate themes/*.ps1 and VividLifePowerShell/ from the design-system tokens
+npm test        # verify both mappings
 npm run format  # prettier
 ```
 
-Edit `src/theme-template.mjs` to change how foundation tokens map to PSReadLine/`$PSStyle` properties — never hand-edit files under `themes/`, they're generated.
+Edit `src/theme-template.mjs` (standalone scripts) or `src/module-template.mjs` (the module) to change how foundation tokens map to PSReadLine/`$PSStyle` properties — both derive from the same [design decisions](src/theme-template.mjs), so keep them in sync. Never hand-edit files under `themes/` or `VividLifePowerShell/`, they're generated.
 
 If you need a color or token not in the foundation, that's a foundation gap — open an issue against [vivid-life-design-system](https://github.com/vivid-life-theme/vivid-life-design-system) rather than papering over it here.

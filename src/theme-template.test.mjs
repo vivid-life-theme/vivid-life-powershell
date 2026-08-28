@@ -2,18 +2,10 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import tokens from "@vivid-life-theme/design-system";
 import { buildTheme } from "./theme-template.mjs";
+import { rgbTriple } from "./rgb.mjs";
 
 const FLAVORS = ["midnight", "twilight", "dawn", "noon"];
 const VARIANTS = ["red", "orange", "yellow", "green", "blue", "purple"];
-
-function rgbTriple(hex) {
-  const h = hex.startsWith("#") ? hex.slice(1) : hex;
-  return [
-    parseInt(h.slice(0, 2), 16),
-    parseInt(h.slice(2, 4), 16),
-    parseInt(h.slice(4, 6), 16),
-  ];
-}
 
 function fromRgbCall(hex) {
   const [r, g, b] = rgbTriple(hex);

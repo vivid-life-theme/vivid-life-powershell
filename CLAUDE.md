@@ -22,20 +22,28 @@ PowerShell port of the Vivid Life Theme design system (4 flavors × 6 variants =
 
 ## Commands
 
-- `npm run build` — regenerate `themes/*.ps1` from `@vivid-life-theme/design-system` (via `build.mjs`)
-- `npm test` — run `src/theme-template.test.mjs` (node:test)
+- `npm run build` — regenerate `themes/*.ps1` **and** `VividLifePowerShell/` from `@vivid-life-theme/design-system` (via `build.mjs`)
+- `npm test` — run `src/theme-template.test.mjs` and `src/module-template.test.mjs` (node:test)
 - `npm run format` / `npm run format:check` — prettier
 
 ## Structure
 
-- `themes/*.ps1` — generated output, one file per flavor×variant (`vivid-life-<flavor>-<variant>.ps1`). **Never hand-edit** — edit `src/theme-template.mjs` and rebuild.
+Two install paths generated from the same foundation tokens — keep them in sync when changing the mapping:
+
+- `themes/*.ps1` — standalone scripts, one per flavor×variant (`vivid-life-<flavor>-<variant>.ps1`), dot-sourced directly from `$PROFILE`. **Never hand-edit** — edit `src/theme-template.mjs` and rebuild.
+- `VividLifePowerShell/` — a publishable module (`VividLifePowerShell.psd1` + `.psm1`) exposing one cmdlet, `Set-VividLifeTheme -Flavor <Flavor> -Variant <Variant>`, for `Install-Module` (PowerShell Gallery). **Never hand-edit** — edit `src/module-template.mjs` and rebuild.
 - `src/theme-template.mjs` — pure `buildTheme(flavor, variant, tokens)` mapping foundation tokens to PSReadLine `Set-PSReadLineOption -Colors` tokens and `$PSStyle.Formatting.*`/`$PSStyle.FileInfo.*` properties.
-- `build.mjs` — iterates all 24 combinations and writes `themes/`.
-- Themes require PowerShell 7.2+ (`$PSStyle`); dot-source a theme script from `$PROFILE` — don't `&`-invoke it, it must run in the caller's scope.
+- `src/module-template.mjs` — bakes all 24 themes into one data table (`buildThemeTable`) plus a shared apply function (`buildModule`) and manifest (`buildManifest`); mirrors the exact same mapping decisions as `theme-template.mjs` so the two paths don't drift.
+- `src/rgb.mjs` — shared hex→RGB parsing used by both templates.
+- `build.mjs` — iterates all 24 combinations and writes both `themes/` and `VividLifePowerShell/`.
+- Both require PowerShell 7.2+ (`$PSStyle`). Standalone scripts must be dot-sourced (not `&`-invoked) to run in the caller's scope; the module keeps helpers module-private automatically (only `Set-VividLifeTheme` is exported).
+- PowerShell 7.2 bundles PSReadLine 2.1.0, which rejects `ListPrediction`/`ListPredictionSelected` (added in 2.2.0) — both templates send those in a separate try/catch-wrapped call so older PSReadLine still gets full core coloring. `$PSStyle.Formatting`/`.FileInfo` assignments are similarly wrapped per-property since the member set has grown past 7.2. Verify any template change against a real `pwsh` (available in this environment), not just unit tests — the unit tests check string shape, not runtime validity.
+- The module's GUID (`MODULE_GUID` in `src/module-template.mjs`) is permanent — never regenerate it, that would make the PowerShell Gallery treat a republish as a different module.
+- Not yet published to the PowerShell Gallery — publishing needs the maintainer's own API key (`Publish-Module -NuGetApiKey ...`), not something to attempt from here.
 
 ## References
 
-Use the `vivid-life-theme` skill to fetch the design-system tokens (`tokens.json`) and system overview before writing `src/theme-template.mjs` — do not hardcode colors from memory.
+Use the `vivid-life-theme` skill to fetch the design-system tokens (`tokens.json`) and system overview before writing `src/theme-template.mjs` or `src/module-template.mjs` — do not hardcode colors from memory.
 
 ## Conventions
 

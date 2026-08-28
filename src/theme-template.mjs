@@ -20,6 +20,8 @@
 // try/catch-wrapped call, and (3) wraps every `$PSStyle.*` property
 // assignment individually so one missing property doesn't block the rest.
 
+import { rgbTriple } from "./rgb.mjs";
+
 const label = {
   midnight: "Midnight",
   twilight: "Twilight",
@@ -34,15 +36,6 @@ const variantLabel = {
   blue: "Blue",
   purple: "Purple",
 };
-
-function rgbTriple(hex) {
-  const h = hex.startsWith("#") ? hex.slice(1) : hex;
-  return [
-    parseInt(h.slice(0, 2), 16),
-    parseInt(h.slice(2, 4), 16),
-    parseInt(h.slice(4, 6), 16),
-  ];
-}
 
 function fg(hex) {
   const [r, g, b] = rgbTriple(hex);
