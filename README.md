@@ -29,7 +29,9 @@ Install-Module -Name PSReadLine -MinimumVersion 2.2.0 -Force -SkipPublisherCheck
 
 ## Install
 
-### PowerShell Gallery (module — not yet published)
+### PowerShell Gallery
+
+[VividLifePowerShell](https://www.powershellgallery.com/packages/VividLifePowerShell) is published on the PowerShell Gallery:
 
 ```powershell
 Install-Module -Name VividLifePowerShell -Scope CurrentUser
@@ -44,24 +46,13 @@ Set-VividLifeTheme -Flavor Midnight -Variant Purple
 
 `Set-VividLifeTheme` with no arguments applies the default (Midnight · Purple). Flavor and variant names tab-complete.
 
-### From a local clone (module)
+### Standalone script (no module)
 
-Until the module is published, import it directly from a clone:
+If you'd rather not depend on a module, clone the repo and dot-source one theme script directly instead:
 
 ```powershell
 git clone https://github.com/vivid-life-theme/vivid-life-powershell.git
 ```
-
-```powershell
-Import-Module /path/to/vivid-life-powershell/VividLifePowerShell/VividLifePowerShell.psd1
-Set-VividLifeTheme -Flavor Midnight -Variant Purple
-```
-
-Add the same two lines to your `$PROFILE` to apply on every session.
-
-### Standalone script (no module)
-
-If you'd rather not depend on a module, dot-source one theme script directly instead:
 
 ```powershell
 if (-not (Test-Path $PROFILE)) { New-Item -ItemType File -Path $PROFILE -Force }
