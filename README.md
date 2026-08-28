@@ -21,6 +21,12 @@ Each flavor is available in six accent variants: **Red · Orange · Yellow · Gr
 
 PowerShell **7.2+** — themes use `$PSStyle`, introduced in that release. On older hosts, a theme script prints a warning and returns without changing anything.
 
+PowerShell 7.2 itself bundles **PSReadLine 2.1.0**, which predates the prediction-list colors (`ListPrediction`/`ListPredictionSelected`) — every theme still applies full syntax-highlighting colors on 2.1.0, just without those two. Check your version with `(Get-Module PSReadLine).Version` and, if you want prediction-list coloring, upgrade with:
+
+```powershell
+Install-Module -Name PSReadLine -MinimumVersion 2.2.0 -Force -SkipPublisherCheck
+```
+
 ## Install
 
 ### Manual
@@ -29,7 +35,13 @@ PowerShell **7.2+** — themes use `$PSStyle`, introduced in that release. On ol
 git clone https://github.com/vivid-life-theme/vivid-life-powershell.git
 ```
 
-Dot-source one theme from your `$PROFILE`:
+Dot-source one theme from your `$PROFILE`. If you don't have a profile yet, create one first:
+
+```powershell
+if (-not (Test-Path $PROFILE)) { New-Item -ItemType File -Path $PROFILE -Force }
+```
+
+Then add this line to it:
 
 ```powershell
 . /path/to/vivid-life-powershell/themes/vivid-life-midnight-purple.ps1
