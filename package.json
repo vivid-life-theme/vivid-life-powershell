@@ -1,0 +1,40 @@
+{
+  "name": "vivid-life-powershell",
+  "description": "A multi-flavor color theme for PowerShell (PSReadLine + $PSStyle). 4 flavors × 6 variants = 24 themes. WCAG AA verified.",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Michael van Laar",
+    "email": "michael@van-laar.de"
+  },
+  "homepage": "https://github.com/vivid-life-theme/vivid-life-powershell",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vivid-life-theme/vivid-life-powershell.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vivid-life-theme/vivid-life-powershell/issues"
+  },
+  "keywords": [
+    "powershell",
+    "pwsh",
+    "psreadline",
+    "theme",
+    "color-theme",
+    "wcag",
+    "accessibility",
+    "vivid-life"
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test src/theme-template.test.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@vivid-life-theme/design-system": "^0.6.0",
+    "prettier": "^3.9.0"
+  }
+}
