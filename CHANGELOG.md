@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-09-01
+
+### Changed
+
+- Bumped `@vivid-life-theme/design-system` to 0.7.0 (no theme/module output change — PowerShell has no shell-wide ANSI terminal palette to set)
+
+### Fixed
+
+- Replaced an incomplete regex-escape helper in `src/theme-template.test.mjs` with a full metacharacter escape, closing a CodeQL `js/incomplete-sanitization` finding
+
 ## [0.1.0] - 2026-08-28
 
 ### Added

@@ -1,6 +1,6 @@
 @{
     RootModule        = 'VividLifePowerShell.psm1'
-    ModuleVersion     = '0.1.0'
+    ModuleVersion     = '0.1.1'
     GUID              = '7eb9cef9-0265-4a3e-b246-ed8a43e6f7f3'
     Author            = 'Michael van Laar'
     CompanyName       = 'Vivid Life Theme'
