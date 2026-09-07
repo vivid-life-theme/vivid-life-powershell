@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-09-07
+
+### Changed
+
+- Bumped `@vivid-life-theme/design-system` to 0.9.0
+- `ListPredictionSelected` (PSReadLine's highlighted prediction-list entry) now uses the design system's selected-item wash (18% accent on `bg`, variant-aware) instead of the flat 25% `state.selection` text-selection color — the two are now formally distinct per design-system issue #14; `Selection` is unchanged
+
 ## [0.1.1] - 2026-09-01
 
 ### Changed
