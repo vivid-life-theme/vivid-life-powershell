@@ -12,6 +12,8 @@
 // theme-template.mjs (Operator -> Keyword, Variable -> Constant, etc.) so
 // the two install paths never drift apart.
 
+import { selectedWash } from "@vivid-life-theme/design-system/tools/build-tokens";
+
 import { rgbTriple } from "./rgb.mjs";
 
 export const MODULE_NAME = "VividLifePowerShell";
@@ -48,7 +50,8 @@ function psArray(triple) {
 // are derived from these in the apply function, not stored redundantly here.
 function themeFields(flavor, variant, tokens) {
   const f = tokens.flavors[flavor];
-  const { text, state, semantic, syntax } = f;
+  const { text, state, semantic, syntax, surface } = f;
+  const accent = resolveAccent(tokens, flavor, variant);
   return {
     Fg: text.fg,
     FgSubtle: text.fg_subtle,
@@ -57,7 +60,7 @@ function themeFields(flavor, variant, tokens) {
     Keyword: syntax.keyword,
     StringColor: syntax.string,
     NumberColor: syntax.number,
-    Accent: resolveAccent(tokens, flavor, variant),
+    Accent: accent,
     Parameter: syntax.parameter,
     TypeColor: syntax.type,
     Constant: syntax.constant,
@@ -67,6 +70,14 @@ function themeFields(flavor, variant, tokens) {
     Warning: semantic.warning,
     Success: semantic.success,
     SelectionBg: state.selection,
+    // Selected-list-row wash (issue #14) — distinct from SelectionBg (flat
+    // 25% mix, for text selection). Baked per flavor+variant against `bg`
+    // since PSReadLine's list can't do runtime alpha compositing.
+    SelectedBg: selectedWash({
+      surface: surface.bg,
+      accent,
+      mixPct: tokens.accent_mix.selected.pct / 100,
+    }),
   };
 }
 
@@ -131,7 +142,7 @@ function script:Set-VividLifeColors([hashtable]$Theme) {
         try {
             Set-PSReadLineOption -Colors @{
                 ListPrediction         = (ConvertTo-VividLifeForeground $Theme['FgMuted'])
-                ListPredictionSelected = "$(ConvertTo-VividLifeForeground $Theme['Fg'])$(ConvertTo-VividLifeBackground $Theme['SelectionBg'])"
+                ListPredictionSelected = "$(ConvertTo-VividLifeForeground $Theme['Fg'])$(ConvertTo-VividLifeBackground $Theme['SelectedBg'])"
             }
         } catch { }
     }

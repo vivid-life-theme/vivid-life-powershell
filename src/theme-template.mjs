@@ -20,6 +20,8 @@
 // try/catch-wrapped call, and (3) wraps every `$PSStyle.*` property
 // assignment individually so one missing property doesn't block the rest.
 
+import { selectedWash } from "@vivid-life-theme/design-system/tools/build-tokens";
+
 import { rgbTriple } from "./rgb.mjs";
 
 const label = {
@@ -54,9 +56,18 @@ function resolveAccent(tokens, flavor, variant) {
 
 export function buildTheme(flavor, variant, tokens) {
   const f = tokens.flavors[flavor];
-  const { text, state, semantic, syntax } = f;
+  const { text, state, semantic, syntax, surface } = f;
   const accent = resolveAccent(tokens, flavor, variant);
   const name = `Vivid Life · ${label[flavor]} · ${variantLabel[variant]}`;
+
+  // Selected-list-row wash (issue #14) — distinct from `state.selection`
+  // (flat 25% mix, for text selection). Baked per flavor+variant against
+  // `bg` since PSReadLine's list can't do runtime alpha compositing.
+  const selectedBg = selectedWash({
+    surface: surface.bg,
+    accent,
+    mixPct: tokens.accent_mix.selected.pct / 100,
+  });
 
   // Verified against PSReadLine 2.1.0 (bundled with PowerShell 7.2, our
   // documented minimum) — all 16 keys accepted. Selection combines
@@ -89,7 +100,7 @@ export function buildTheme(flavor, variant, tokens) {
   // every core color above.
   const predictionColors = [
     ["ListPrediction", fg(text.fg_muted)],
-    ["ListPredictionSelected", `${fg(text.fg)} + ${bg(state.selection)}`],
+    ["ListPredictionSelected", `${fg(text.fg)} + ${bg(selectedBg)}`],
   ];
 
   // $PSStyle.Formatting.* — output formatting (errors, tables, verbose/debug).

@@ -20,6 +20,7 @@ $script:VividLifeThemes = @{
         Warning = @(253, 224, 71)
         Success = @(190, 242, 100)
         SelectionBg = @(42, 47, 58)
+        SelectedBg = @(62, 31, 31)
     }
     'Midnight-Orange' = @{
         Fg = @(245, 245, 245)
@@ -39,6 +40,7 @@ $script:VividLifeThemes = @{
         Warning = @(253, 224, 71)
         Success = @(190, 242, 100)
         SelectionBg = @(42, 47, 58)
+        SelectedBg = @(64, 40, 23)
     }
     'Midnight-Yellow' = @{
         Fg = @(245, 245, 245)
@@ -58,6 +60,7 @@ $script:VividLifeThemes = @{
         Warning = @(253, 224, 71)
         Success = @(190, 242, 100)
         SelectionBg = @(42, 47, 58)
+        SelectedBg = @(61, 51, 20)
     }
     'Midnight-Green' = @{
         Fg = @(245, 245, 245)
@@ -77,6 +80,7 @@ $script:VividLifeThemes = @{
         Warning = @(253, 224, 71)
         Success = @(190, 242, 100)
         SelectionBg = @(42, 47, 58)
+        SelectedBg = @(43, 56, 23)
     }
     'Midnight-Blue' = @{
         Fg = @(245, 245, 245)
@@ -96,6 +100,7 @@ $script:VividLifeThemes = @{
         Warning = @(253, 224, 71)
         Success = @(190, 242, 100)
         SelectionBg = @(42, 47, 58)
+        SelectedBg = @(45, 54, 64)
     }
     'Midnight-Purple' = @{
         Fg = @(245, 245, 245)
@@ -115,6 +120,7 @@ $script:VividLifeThemes = @{
         Warning = @(253, 224, 71)
         Success = @(190, 242, 100)
         SelectionBg = @(42, 47, 58)
+        SelectedBg = @(58, 51, 65)
     }
     'Twilight-Red' = @{
         Fg = @(245, 245, 245)
@@ -134,6 +140,7 @@ $script:VividLifeThemes = @{
         Warning = @(254, 249, 195)
         Success = @(190, 242, 100)
         SelectionBg = @(91, 91, 91)
+        SelectedBg = @(98, 82, 82)
     }
     'Twilight-Orange' = @{
         Fg = @(245, 245, 245)
@@ -153,6 +160,7 @@ $script:VividLifeThemes = @{
         Warning = @(254, 249, 195)
         Success = @(190, 242, 100)
         SelectionBg = @(91, 91, 91)
+        SelectedBg = @(98, 86, 73)
     }
     'Twilight-Yellow' = @{
         Fg = @(245, 245, 245)
@@ -172,6 +180,7 @@ $script:VividLifeThemes = @{
         Warning = @(254, 249, 195)
         Success = @(190, 242, 100)
         SelectionBg = @(91, 91, 91)
+        SelectedBg = @(95, 85, 54)
     }
     'Twilight-Green' = @{
         Fg = @(245, 245, 245)
@@ -191,6 +200,7 @@ $script:VividLifeThemes = @{
         Warning = @(254, 249, 195)
         Success = @(190, 242, 100)
         SelectionBg = @(91, 91, 91)
+        SelectedBg = @(76, 89, 56)
     }
     'Twilight-Blue' = @{
         Fg = @(245, 245, 245)
@@ -210,6 +220,7 @@ $script:VividLifeThemes = @{
         Warning = @(254, 249, 195)
         Success = @(190, 242, 100)
         SelectionBg = @(91, 91, 91)
+        SelectedBg = @(79, 88, 98)
     }
     'Twilight-Purple' = @{
         Fg = @(245, 245, 245)
@@ -229,6 +240,7 @@ $script:VividLifeThemes = @{
         Warning = @(254, 249, 195)
         Success = @(190, 242, 100)
         SelectionBg = @(91, 91, 91)
+        SelectedBg = @(91, 85, 98)
     }
     'Dawn-Red' = @{
         Fg = @(23, 23, 23)
@@ -248,6 +260,7 @@ $script:VividLifeThemes = @{
         Warning = @(113, 63, 18)
         Success = @(54, 83, 20)
         SelectionBg = @(189, 189, 189)
+        SelectedBg = @(197, 179, 179)
     }
     'Dawn-Orange' = @{
         Fg = @(23, 23, 23)
@@ -267,6 +280,7 @@ $script:VividLifeThemes = @{
         Warning = @(113, 63, 18)
         Success = @(54, 83, 20)
         SelectionBg = @(189, 189, 189)
+        SelectedBg = @(196, 182, 177)
     }
     'Dawn-Yellow' = @{
         Fg = @(23, 23, 23)
@@ -286,6 +300,7 @@ $script:VividLifeThemes = @{
         Warning = @(113, 63, 18)
         Success = @(54, 83, 20)
         SelectionBg = @(189, 189, 189)
+        SelectedBg = @(194, 185, 177)
     }
     'Dawn-Green' = @{
         Fg = @(23, 23, 23)
@@ -305,6 +320,7 @@ $script:VividLifeThemes = @{
         Warning = @(113, 63, 18)
         Success = @(54, 83, 20)
         SelectionBg = @(189, 189, 189)
+        SelectedBg = @(184, 189, 177)
     }
     'Dawn-Blue' = @{
         Fg = @(23, 23, 23)
@@ -324,6 +340,7 @@ $script:VividLifeThemes = @{
         Warning = @(113, 63, 18)
         Success = @(54, 83, 20)
         SelectionBg = @(189, 189, 189)
+        SelectedBg = @(179, 188, 213)
     }
     'Dawn-Purple' = @{
         Fg = @(23, 23, 23)
@@ -343,6 +360,7 @@ $script:VividLifeThemes = @{
         Warning = @(113, 63, 18)
         Success = @(54, 83, 20)
         SelectionBg = @(189, 189, 189)
+        SelectedBg = @(197, 180, 211)
     }
     'Noon-Red' = @{
         Fg = @(23, 23, 23)
@@ -362,6 +380,7 @@ $script:VividLifeThemes = @{
         Warning = @(113, 63, 18)
         Success = @(54, 83, 20)
         SelectionBg = @(229, 229, 229)
+        SelectedBg = @(234, 206, 206)
     }
     'Noon-Orange' = @{
         Fg = @(23, 23, 23)
@@ -381,6 +400,7 @@ $script:VividLifeThemes = @{
         Warning = @(113, 63, 18)
         Success = @(54, 83, 20)
         SelectionBg = @(229, 229, 229)
+        SelectedBg = @(236, 213, 203)
     }
     'Noon-Yellow' = @{
         Fg = @(23, 23, 23)
@@ -400,6 +420,7 @@ $script:VividLifeThemes = @{
         Warning = @(113, 63, 18)
         Success = @(54, 83, 20)
         SelectionBg = @(229, 229, 229)
+        SelectedBg = @(221, 212, 204)
     }
     'Noon-Green' = @{
         Fg = @(23, 23, 23)
@@ -419,6 +440,7 @@ $script:VividLifeThemes = @{
         Warning = @(113, 63, 18)
         Success = @(54, 83, 20)
         SelectionBg = @(229, 229, 229)
+        SelectedBg = @(211, 216, 205)
     }
     'Noon-Blue' = @{
         Fg = @(23, 23, 23)
@@ -438,6 +460,7 @@ $script:VividLifeThemes = @{
         Warning = @(113, 63, 18)
         Success = @(54, 83, 20)
         SelectionBg = @(229, 229, 229)
+        SelectedBg = @(206, 215, 240)
     }
     'Noon-Purple' = @{
         Fg = @(23, 23, 23)
@@ -457,6 +480,7 @@ $script:VividLifeThemes = @{
         Warning = @(113, 63, 18)
         Success = @(54, 83, 20)
         SelectionBg = @(229, 229, 229)
+        SelectedBg = @(224, 207, 238)
     }
 }
 
@@ -501,7 +525,7 @@ function script:Set-VividLifeColors([hashtable]$Theme) {
         try {
             Set-PSReadLineOption -Colors @{
                 ListPrediction         = (ConvertTo-VividLifeForeground $Theme['FgMuted'])
-                ListPredictionSelected = "$(ConvertTo-VividLifeForeground $Theme['Fg'])$(ConvertTo-VividLifeBackground $Theme['SelectionBg'])"
+                ListPredictionSelected = "$(ConvertTo-VividLifeForeground $Theme['Fg'])$(ConvertTo-VividLifeBackground $Theme['SelectedBg'])"
             }
         } catch { }
     }

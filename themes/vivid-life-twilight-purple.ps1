@@ -34,7 +34,7 @@ if (-not $PSStyle) {
         try {
             Set-PSReadLineOption -Colors @{
                 ListPrediction = $PSStyle.Foreground.FromRgb(212, 212, 212)
-                ListPredictionSelected = $PSStyle.Foreground.FromRgb(245, 245, 245) + $PSStyle.Background.FromRgb(91, 91, 91)
+                ListPredictionSelected = $PSStyle.Foreground.FromRgb(245, 245, 245) + $PSStyle.Background.FromRgb(91, 85, 98)
             }
         } catch { }
     }

@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import tokens from "@vivid-life-theme/design-system";
+import { selectedWash } from "@vivid-life-theme/design-system/tools/build-tokens";
 import { buildTheme } from "./theme-template.mjs";
 import { rgbTriple } from "./rgb.mjs";
 
@@ -10,6 +11,11 @@ const VARIANTS = ["red", "orange", "yellow", "green", "blue", "purple"];
 function fromRgbCall(hex) {
   const [r, g, b] = rgbTriple(hex);
   return `$PSStyle.Foreground.FromRgb(${r}, ${g}, ${b})`;
+}
+
+function bgFromRgbCall(hex) {
+  const [r, g, b] = rgbTriple(hex);
+  return `$PSStyle.Background.FromRgb(${r}, ${g}, ${b})`;
 }
 
 // Full regex-metacharacter escape (MDN's canonical set) — a hand-picked
@@ -60,17 +66,31 @@ test("Error maps to semantic.danger in PSReadLine colors and $PSStyle.Formatting
   );
 });
 
-test("Selection and ListPredictionSelected combine foreground + background", () => {
+test("Selection uses state.selection (flat text-selection wash)", () => {
   const content = buildTheme("noon", "green", tokens);
   const fgCall = escapeRegExp(fromRgbCall(tokens.flavors.noon.text.fg));
-  const bgHex = tokens.flavors.noon.state.selection;
-  const [r, g, b] = rgbTriple(bgHex);
-  const bgCall = `\\$PSStyle\\.Background\\.FromRgb\\(${r}, ${g}, ${b}\\)`;
+  const bgCall = escapeRegExp(
+    bgFromRgbCall(tokens.flavors.noon.state.selection),
+  );
   assert.match(content, new RegExp(`Selection = ${fgCall} \\+ ${bgCall}`));
+});
+
+test("ListPredictionSelected uses the selected-item wash, not state.selection", () => {
+  const content = buildTheme("noon", "green", tokens);
+  const fgCall = escapeRegExp(fromRgbCall(tokens.flavors.noon.text.fg));
+  const shade = tokens.accent_shade.noon.green;
+  const accent = tokens.palette.green[shade];
+  const selectedBg = selectedWash({
+    surface: tokens.flavors.noon.surface.bg,
+    accent,
+    mixPct: tokens.accent_mix.selected.pct / 100,
+  });
+  const bgCall = escapeRegExp(bgFromRgbCall(selectedBg));
   assert.match(
     content,
     new RegExp(`ListPredictionSelected = ${fgCall} \\+ ${bgCall}`),
   );
+  assert.notEqual(selectedBg, tokens.flavors.noon.state.selection);
 });
 
 test("Formatting and FileInfo blocks are set outside the PSReadLine module guard", () => {
