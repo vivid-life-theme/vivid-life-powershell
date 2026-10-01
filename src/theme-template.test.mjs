@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import tokens from "@vivid-life-theme/design-system";
-import { selectedWash } from "@vivid-life-theme/design-system/tools/build-tokens";
+import { resolveColor } from "@vivid-life-theme/design-system/tools/build-tokens";
 import { buildTheme } from "./theme-template.mjs";
 import { rgbTriple } from "./rgb.mjs";
 
@@ -66,31 +66,44 @@ test("Error maps to semantic.danger in PSReadLine colors and $PSStyle.Formatting
   );
 });
 
-test("Selection uses state.selection (flat text-selection wash)", () => {
-  const content = buildTheme("noon", "green", tokens);
-  const fgCall = escapeRegExp(fromRgbCall(tokens.flavors.noon.text.fg));
-  const bgCall = escapeRegExp(
-    bgFromRgbCall(tokens.flavors.noon.state.selection),
-  );
-  assert.match(content, new RegExp(`Selection = ${fgCall} \\+ ${bgCall}`));
+function roleColor(_role, flavor, variant, target) {
+  return resolveColor(tokens, flavor, variant, target, {
+    surface: "bg_terminal",
+  });
+}
+
+test("every shell_roles PSReadLine key is emitted with its role's colors", () => {
+  for (const flavor of FLAVORS) {
+    for (const variant of VARIANTS) {
+      const content = buildTheme(flavor, variant, tokens);
+      for (const role of Object.values(tokens.shell_roles.roles)) {
+        for (const key of role.psreadline) {
+          const fg = fromRgbCall(roleColor(role, flavor, variant, role.color));
+          const value = role.background
+            ? `${fg} + ${bgFromRgbCall(roleColor(role, flavor, variant, role.background))}`
+            : fg;
+          assert.match(
+            content,
+            new RegExp(`${key} = ${escapeRegExp(value)}`),
+            `${flavor}-${variant} ${key}`,
+          );
+        }
+      }
+    }
+  }
 });
 
-test("ListPredictionSelected uses the selected-item wash, not state.selection", () => {
+test("ListPredictionSelected uses the selected-row wash over bg_terminal", () => {
   const content = buildTheme("noon", "green", tokens);
-  const fgCall = escapeRegExp(fromRgbCall(tokens.flavors.noon.text.fg));
-  const shade = tokens.accent_shade.noon.green;
-  const accent = tokens.palette.green[shade];
-  const selectedBg = selectedWash({
-    surface: tokens.flavors.noon.surface.bg,
-    accent,
-    mixPct: tokens.accent_mix.selected.pct / 100,
+  const wash = resolveColor(tokens, "noon", "green", "overlay.selected", {
+    surface: "bg_terminal",
   });
-  const bgCall = escapeRegExp(bgFromRgbCall(selectedBg));
   assert.match(
     content,
-    new RegExp(`ListPredictionSelected = ${fgCall} \\+ ${bgCall}`),
+    new RegExp(
+      `ListPredictionSelected = ${escapeRegExp(fromRgbCall(tokens.flavors.noon.text.fg))} \\+ ${escapeRegExp(bgFromRgbCall(wash))}`,
+    ),
   );
-  assert.notEqual(selectedBg, tokens.flavors.noon.state.selection);
 });
 
 test("Formatting and FileInfo blocks are set outside the PSReadLine module guard", () => {

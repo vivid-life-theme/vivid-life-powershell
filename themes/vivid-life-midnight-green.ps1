@@ -14,27 +14,27 @@ if (-not $PSStyle) {
     if (Get-Module -ListAvailable -Name PSReadLine) {
         Set-PSReadLineOption -Colors @{
             Default = $PSStyle.Foreground.FromRgb(245, 245, 245)
-            Comment = $PSStyle.Foreground.FromRgb(115, 115, 115)
+            Command = $PSStyle.Foreground.FromRgb(132, 204, 22)
             Keyword = $PSStyle.Foreground.FromRgb(216, 180, 254)
+            Parameter = $PSStyle.Foreground.FromRgb(190, 242, 100)
             String = $PSStyle.Foreground.FromRgb(132, 204, 22)
             Number = $PSStyle.Foreground.FromRgb(249, 115, 22)
-            Command = $PSStyle.Foreground.FromRgb(132, 204, 22)
-            Parameter = $PSStyle.Foreground.FromRgb(253, 186, 116)
-            Operator = $PSStyle.Foreground.FromRgb(216, 180, 254)
-            Type = $PSStyle.Foreground.FromRgb(234, 179, 8)
             Variable = $PSStyle.Foreground.FromRgb(249, 115, 22)
+            Type = $PSStyle.Foreground.FromRgb(234, 179, 8)
             Member = $PSStyle.Foreground.FromRgb(147, 197, 253)
-            Emphasis = $PSStyle.Foreground.FromRgb(147, 197, 253)
+            Operator = $PSStyle.Foreground.FromRgb(216, 180, 254)
+            Comment = $PSStyle.Foreground.FromRgb(153, 153, 153)
+            InlinePrediction = $PSStyle.Foreground.FromRgb(153, 153, 153)
+            ContinuationPrompt = $PSStyle.Foreground.FromRgb(153, 153, 153)
             Error = $PSStyle.Foreground.FromRgb(252, 165, 165)
-            ContinuationPrompt = $PSStyle.Foreground.FromRgb(115, 115, 115)
-            InlinePrediction = $PSStyle.Foreground.FromRgb(115, 115, 115)
-            Selection = $PSStyle.Foreground.FromRgb(245, 245, 245) + $PSStyle.Background.FromRgb(42, 47, 58)
+            Selection = $PSStyle.Foreground.FromRgb(245, 245, 245) + $PSStyle.Background.FromRgb(32, 47, 15)
+            Emphasis = $PSStyle.Foreground.FromRgb(245, 245, 245) + $PSStyle.Background.FromRgb(62, 37, 14)
         }
 
         try {
             Set-PSReadLineOption -Colors @{
-                ListPrediction = $PSStyle.Foreground.FromRgb(212, 212, 212)
-                ListPredictionSelected = $PSStyle.Foreground.FromRgb(245, 245, 245) + $PSStyle.Background.FromRgb(43, 56, 23)
+                ListPrediction = $PSStyle.Foreground.FromRgb(245, 245, 245)
+                ListPredictionSelected = $PSStyle.Foreground.FromRgb(245, 245, 245) + $PSStyle.Background.FromRgb(32, 45, 12)
             }
         } catch { }
     }
@@ -46,7 +46,7 @@ if (-not $PSStyle) {
     Set-VividLifeProperty { $PSStyle.Formatting.ErrorAccent = $PSStyle.Bold + $PSStyle.Foreground.FromRgb(252, 165, 165) }
     Set-VividLifeProperty { $PSStyle.Formatting.Warning = $PSStyle.Foreground.FromRgb(253, 224, 71) }
     Set-VividLifeProperty { $PSStyle.Formatting.Verbose = $PSStyle.Foreground.FromRgb(147, 197, 253) }
-    Set-VividLifeProperty { $PSStyle.Formatting.Debug = $PSStyle.Foreground.FromRgb(115, 115, 115) }
+    Set-VividLifeProperty { $PSStyle.Formatting.Debug = $PSStyle.Foreground.FromRgb(153, 153, 153) }
 
     Set-VividLifeProperty { $PSStyle.FileInfo.Directory = $PSStyle.Bold + $PSStyle.Foreground.FromRgb(132, 204, 22) }
     Set-VividLifeProperty { $PSStyle.FileInfo.SymbolicLink = $PSStyle.Foreground.FromRgb(249, 115, 22) }

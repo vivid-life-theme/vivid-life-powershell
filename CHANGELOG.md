@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- Bumped `@vivid-life-theme/design-system` to 0.11.0
+- PSReadLine colors are now read from the design system's `shell_roles` map (shared with the fish port) instead of being chosen in the templates. Visible changes: `Parameter` uses `attr` (was `parameter`), `ListPrediction` uses `fg` (was `fg_muted`), `Emphasis` (search match) is `fg` on the find-match overlay (was `semantic.info`), `Selection` and `ListPredictionSelected` use the `overlay.selection` / `overlay.selected` recipes composited over `bg_terminal`
+
 ## [0.1.2] - 2026-09-07
 
 ### Changed

@@ -14,27 +14,27 @@ if (-not $PSStyle) {
     if (Get-Module -ListAvailable -Name PSReadLine) {
         Set-PSReadLineOption -Colors @{
             Default = $PSStyle.Foreground.FromRgb(23, 23, 23)
-            Comment = $PSStyle.Foreground.FromRgb(82, 82, 82)
-            Keyword = $PSStyle.Foreground.FromRgb(126, 34, 206)
-            String = $PSStyle.Foreground.FromRgb(54, 83, 20)
-            Number = $PSStyle.Foreground.FromRgb(194, 65, 12)
             Command = $PSStyle.Foreground.FromRgb(185, 28, 28)
-            Parameter = $PSStyle.Foreground.FromRgb(124, 45, 18)
-            Operator = $PSStyle.Foreground.FromRgb(126, 34, 206)
-            Type = $PSStyle.Foreground.FromRgb(113, 63, 18)
-            Variable = $PSStyle.Foreground.FromRgb(194, 65, 12)
+            Keyword = $PSStyle.Foreground.FromRgb(126, 34, 206)
+            Parameter = $PSStyle.Foreground.FromRgb(63, 98, 18)
+            String = $PSStyle.Foreground.FromRgb(54, 83, 20)
+            Number = $PSStyle.Foreground.FromRgb(124, 45, 18)
+            Variable = $PSStyle.Foreground.FromRgb(124, 45, 18)
+            Type = $PSStyle.Foreground.FromRgb(133, 77, 14)
             Member = $PSStyle.Foreground.FromRgb(29, 78, 216)
-            Emphasis = $PSStyle.Foreground.FromRgb(30, 58, 138)
-            Error = $PSStyle.Foreground.FromRgb(127, 29, 29)
-            ContinuationPrompt = $PSStyle.Foreground.FromRgb(82, 82, 82)
+            Operator = $PSStyle.Foreground.FromRgb(126, 34, 206)
+            Comment = $PSStyle.Foreground.FromRgb(82, 82, 82)
             InlinePrediction = $PSStyle.Foreground.FromRgb(82, 82, 82)
-            Selection = $PSStyle.Foreground.FromRgb(23, 23, 23) + $PSStyle.Background.FromRgb(229, 229, 229)
+            ContinuationPrompt = $PSStyle.Foreground.FromRgb(82, 82, 82)
+            Error = $PSStyle.Foreground.FromRgb(127, 29, 29)
+            Selection = $PSStyle.Foreground.FromRgb(23, 23, 23) + $PSStyle.Background.FromRgb(254, 215, 215)
+            Emphasis = $PSStyle.Foreground.FromRgb(23, 23, 23) + $PSStyle.Background.FromRgb(253, 230, 108)
         }
 
         try {
             Set-PSReadLineOption -Colors @{
-                ListPrediction = $PSStyle.Foreground.FromRgb(64, 64, 64)
-                ListPredictionSelected = $PSStyle.Foreground.FromRgb(23, 23, 23) + $PSStyle.Background.FromRgb(234, 206, 206)
+                ListPrediction = $PSStyle.Foreground.FromRgb(23, 23, 23)
+                ListPredictionSelected = $PSStyle.Foreground.FromRgb(23, 23, 23) + $PSStyle.Background.FromRgb(242, 214, 214)
             }
         } catch { }
     }
@@ -49,7 +49,7 @@ if (-not $PSStyle) {
     Set-VividLifeProperty { $PSStyle.Formatting.Debug = $PSStyle.Foreground.FromRgb(82, 82, 82) }
 
     Set-VividLifeProperty { $PSStyle.FileInfo.Directory = $PSStyle.Bold + $PSStyle.Foreground.FromRgb(185, 28, 28) }
-    Set-VividLifeProperty { $PSStyle.FileInfo.SymbolicLink = $PSStyle.Foreground.FromRgb(194, 65, 12) }
+    Set-VividLifeProperty { $PSStyle.FileInfo.SymbolicLink = $PSStyle.Foreground.FromRgb(124, 45, 18) }
     Set-VividLifeProperty { $PSStyle.FileInfo.Executable = $PSStyle.Foreground.FromRgb(54, 83, 20) }
 }
 

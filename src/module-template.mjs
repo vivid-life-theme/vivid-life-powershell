@@ -12,9 +12,8 @@
 // theme-template.mjs (Operator -> Keyword, Variable -> Constant, etc.) so
 // the two install paths never drift apart.
 
-import { selectedWash } from "@vivid-life-theme/design-system/tools/build-tokens";
-
 import { rgbTriple } from "./rgb.mjs";
+import { psreadlineColors } from "./shell-roles.mjs";
 
 export const MODULE_NAME = "VividLifePowerShell";
 // Permanent PowerShell Gallery identity for this module — never regenerate,
@@ -45,39 +44,28 @@ function psArray(triple) {
   return `@(${triple[0]}, ${triple[1]}, ${triple[2]})`;
 }
 
-// Canonical per-theme fields. Composed roles (Operator, Variable, Member,
-// Verbose, Debug, TableHeader, Directory, SymbolicLink, ErrorAccent, ...)
-// are derived from these in the apply function, not stored redundantly here.
+// Canonical per-theme fields: one per PSReadLine key (plus `<Key>Bg` where
+// the shell role has a background), read from the design system's
+// `shell_roles`, and the handful of colors the $PSStyle assignments use.
+// Composed $PSStyle roles (Verbose, Debug, TableHeader, Directory, ...) are
+// derived from these in the apply function, not stored redundantly here.
 function themeFields(flavor, variant, tokens) {
   const f = tokens.flavors[flavor];
-  const { text, state, semantic, syntax, surface } = f;
-  const accent = resolveAccent(tokens, flavor, variant);
+  const { text, semantic, syntax } = f;
+  const fields = {};
+  for (const { key, fg, bg } of psreadlineColors(tokens, flavor, variant)) {
+    fields[key] = fg;
+    if (bg) fields[`${key}Bg`] = bg;
+  }
   return {
-    Fg: text.fg,
+    ...fields,
     FgSubtle: text.fg_subtle,
-    FgMuted: text.fg_muted,
-    Comment: syntax.comment,
-    Keyword: syntax.keyword,
-    StringColor: syntax.string,
-    NumberColor: syntax.number,
-    Accent: accent,
-    Parameter: syntax.parameter,
-    TypeColor: syntax.type,
+    Accent: resolveAccent(tokens, flavor, variant),
     Constant: syntax.constant,
-    FunctionColor: syntax.function,
     Info: semantic.info,
     Danger: semantic.danger,
     Warning: semantic.warning,
     Success: semantic.success,
-    SelectionBg: state.selection,
-    // Selected-list-row wash (issue #14) — distinct from SelectionBg (flat
-    // 25% mix, for text selection). Baked per flavor+variant against `bg`
-    // since PSReadLine's list can't do runtime alpha compositing.
-    SelectedBg: selectedWash({
-      surface: surface.bg,
-      accent,
-      mixPct: tokens.accent_mix.selected.pct / 100,
-    }),
   };
 }
 
@@ -100,7 +88,41 @@ export function buildThemeTable(tokens) {
   return ["$script:VividLifeThemes = @{", entries.join("\n"), "}"].join("\n");
 }
 
-const APPLY_FUNCTION = `
+// The Set-PSReadLineOption calls, one hashtable entry per shell-role key. The
+// key set is identical across themes, so it's read from midnight/purple.
+// Prediction keys need PSReadLine 2.2.0+ and go in a try/catch-wrapped call.
+function psreadlineBlocks(tokens) {
+  const entry = ({ key, bg }, indent) => {
+    const fg = `ConvertTo-VividLifeForeground $Theme['${key}']`;
+    const value = bg
+      ? `"$(${fg})$(ConvertTo-VividLifeBackground $Theme['${key}Bg'])"`
+      : `(${fg})`;
+    return `${indent}${key.padEnd(22)} = ${value}`;
+  };
+  const colors = psreadlineColors(tokens, "midnight", "purple");
+  const block = (items, indent) =>
+    [
+      `${indent}Set-PSReadLineOption -Colors @{`,
+      ...items.map((c) => entry(c, indent + "    ")),
+      `${indent}}`,
+    ].join("\n");
+  return [
+    block(
+      colors.filter((c) => !c.prediction),
+      "        ",
+    ),
+    "",
+    "        try {",
+    block(
+      colors.filter((c) => c.prediction),
+      "            ",
+    ),
+    "        } catch { }",
+  ].join("\n");
+}
+
+const applyFunction = (tokens) =>
+  `
 function script:ConvertTo-VividLifeForeground([int[]]$Triple) {
     $PSStyle.Foreground.FromRgb($Triple[0], $Triple[1], $Triple[2])
 }
@@ -120,31 +142,7 @@ function script:Set-VividLifeColors([hashtable]$Theme) {
     }
 
     if (Get-Module -ListAvailable -Name PSReadLine) {
-        Set-PSReadLineOption -Colors @{
-            Default             = (ConvertTo-VividLifeForeground $Theme['Fg'])
-            Comment             = (ConvertTo-VividLifeForeground $Theme['Comment'])
-            Keyword             = (ConvertTo-VividLifeForeground $Theme['Keyword'])
-            String              = (ConvertTo-VividLifeForeground $Theme['StringColor'])
-            Number              = (ConvertTo-VividLifeForeground $Theme['NumberColor'])
-            Command             = (ConvertTo-VividLifeForeground $Theme['Accent'])
-            Parameter           = (ConvertTo-VividLifeForeground $Theme['Parameter'])
-            Operator            = (ConvertTo-VividLifeForeground $Theme['Keyword'])
-            Type                = (ConvertTo-VividLifeForeground $Theme['TypeColor'])
-            Variable            = (ConvertTo-VividLifeForeground $Theme['Constant'])
-            Member              = (ConvertTo-VividLifeForeground $Theme['FunctionColor'])
-            Emphasis            = (ConvertTo-VividLifeForeground $Theme['Info'])
-            Error               = (ConvertTo-VividLifeForeground $Theme['Danger'])
-            ContinuationPrompt  = (ConvertTo-VividLifeForeground $Theme['FgSubtle'])
-            InlinePrediction    = (ConvertTo-VividLifeForeground $Theme['FgSubtle'])
-            Selection           = "$(ConvertTo-VividLifeForeground $Theme['Fg'])$(ConvertTo-VividLifeBackground $Theme['SelectionBg'])"
-        }
-
-        try {
-            Set-PSReadLineOption -Colors @{
-                ListPrediction         = (ConvertTo-VividLifeForeground $Theme['FgMuted'])
-                ListPredictionSelected = "$(ConvertTo-VividLifeForeground $Theme['Fg'])$(ConvertTo-VividLifeBackground $Theme['SelectedBg'])"
-            }
-        } catch { }
+${psreadlineBlocks(tokens)}
     }
 
     Set-VividLifeProperty { $PSStyle.Formatting.FormatAccent = (ConvertTo-VividLifeForeground $Theme['Accent']) }
@@ -207,7 +205,7 @@ export function buildModule(tokens) {
     "",
     buildThemeTable(tokens),
     "",
-    APPLY_FUNCTION,
+    applyFunction(tokens),
     "",
   ].join("\n");
 }

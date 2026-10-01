@@ -20,9 +20,8 @@
 // try/catch-wrapped call, and (3) wraps every `$PSStyle.*` property
 // assignment individually so one missing property doesn't block the rest.
 
-import { selectedWash } from "@vivid-life-theme/design-system/tools/build-tokens";
-
 import { rgbTriple } from "./rgb.mjs";
+import { psreadlineColors } from "./shell-roles.mjs";
 
 const label = {
   midnight: "Midnight",
@@ -56,52 +55,24 @@ function resolveAccent(tokens, flavor, variant) {
 
 export function buildTheme(flavor, variant, tokens) {
   const f = tokens.flavors[flavor];
-  const { text, state, semantic, syntax, surface } = f;
+  const { text, semantic, syntax } = f;
   const accent = resolveAccent(tokens, flavor, variant);
   const name = `Vivid Life · ${label[flavor]} · ${variantLabel[variant]}`;
 
-  // Selected-list-row wash (issue #14) — distinct from `state.selection`
-  // (flat 25% mix, for text selection). Baked per flavor+variant against
-  // `bg` since PSReadLine's list can't do runtime alpha compositing.
-  const selectedBg = selectedWash({
-    surface: surface.bg,
-    accent,
-    mixPct: tokens.accent_mix.selected.pct / 100,
-  });
-
-  // Verified against PSReadLine 2.1.0 (bundled with PowerShell 7.2, our
-  // documented minimum) — all 16 keys accepted. Selection combines
-  // foreground + background because PSReadLine's Selection color replaces
-  // the rendering for the selected span outright rather than layering a
-  // background over the token's own color (unlike fish's terminal-level
-  // selection, which only needs a background) — this is also the pattern
-  // Microsoft's own PSReadLine examples use.
-  const coreColors = [
-    ["Default", fg(text.fg)],
-    ["Comment", fg(syntax.comment)],
-    ["Keyword", fg(syntax.keyword)],
-    ["String", fg(syntax.string)],
-    ["Number", fg(syntax.number)],
-    ["Command", fg(accent)],
-    ["Parameter", fg(syntax.parameter)],
-    ["Operator", fg(syntax.keyword)],
-    ["Type", fg(syntax.type)],
-    ["Variable", fg(syntax.constant)],
-    ["Member", fg(syntax.function)],
-    ["Emphasis", fg(semantic.info)],
-    ["Error", fg(semantic.danger)],
-    ["ContinuationPrompt", fg(text.fg_subtle)],
-    ["InlinePrediction", fg(text.fg_subtle)],
-    ["Selection", `${fg(text.fg)} + ${bg(state.selection)}`],
+  // PSReadLine keys come from the design system's `shell_roles`. Selection,
+  // Emphasis (search match) and ListPredictionSelected combine foreground +
+  // background because PSReadLine replaces the rendering for the span
+  // outright rather than layering a background over the token's own color.
+  // The prediction keys need PSReadLine 2.2.0+ (absent from the 2.1.0
+  // baseline), so they go in a separate, try/catch-wrapped call and an older
+  // PSReadLine still gets every core color.
+  const psr = psreadlineColors(tokens, flavor, variant);
+  const toEntry = ({ key, fg: fgHex, bg: bgHex }) => [
+    key,
+    bgHex ? `${fg(fgHex)} + ${bg(bgHex)}` : fg(fgHex),
   ];
-
-  // Requires PSReadLine 2.2.0+ — not present in the 2.1.0 baseline. Sent in
-  // a separate, try/catch-wrapped call so an older PSReadLine still gets
-  // every core color above.
-  const predictionColors = [
-    ["ListPrediction", fg(text.fg_muted)],
-    ["ListPredictionSelected", `${fg(text.fg)} + ${bg(selectedBg)}`],
-  ];
+  const coreColors = psr.filter((c) => !c.prediction).map(toEntry);
+  const predictionColors = psr.filter((c) => c.prediction).map(toEntry);
 
   // $PSStyle.Formatting.* — output formatting (errors, tables, verbose/debug).
   // Property set has grown across PowerShell releases past 7.2 (e.g.
