@@ -64,7 +64,7 @@ if (-not (Test-Path $PROFILE)) { New-Item -ItemType File -Path $PROFILE -Force }
 . /path/to/vivid-life-powershell/themes/vivid-life-midnight-purple.ps1
 ```
 
-Dot-source it (`.`), don't `&`-invoke it. The script sets `$PSStyle` and PSReadLine options in the current scope; with `&` it colors a child scope that vanishes the moment the script ends. Very zen, very useless.
+Dot-source it (`.`) from your `$PROFILE`. Invoking it with `&` works too: the script changes `$PSStyle` properties and calls `Set-PSReadLineOption`, and both apply to the whole session, not just the script's own scope.
 
 ### Choose a theme
 
