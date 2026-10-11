@@ -1,27 +1,29 @@
 # Vivid Life Theme — PowerShell
 
-A multi-flavor color theme for [PowerShell](https://learn.microsoft.com/powershell/) (PSReadLine + `$PSStyle`). **4 flavors × 6 variants = 24 themes**, all WCAG AA verified. Generated from the [Vivid Life design-system foundation](https://github.com/vivid-life-theme/vivid-life-design-system) — colors and contrast ratios come from a single source of truth.
+A multi-flavor color theme for [PowerShell](https://learn.microsoft.com/powershell/) (PSReadLine + `$PSStyle`). **4 flavors × 6 variants = 24 themes**, all WCAG AA verified, so your eyes never have to file a bug report. Generated from the [Vivid Life design-system foundation](https://github.com/vivid-life-theme/vivid-life-design-system): colors and contrast ratios come from a single source of truth.
 
 ## Flavors
 
-In time-of-day order:
+In time-of-day order. PowerShell doesn't paint the terminal background (your terminal emulator does), so every color here is checked against the flavor's **terminal background**:
 
-| Flavor       | Type  | Canvas    |
-| ------------ | ----- | --------- |
-| **Midnight** | dark  | `#171717` |
-| **Twilight** | dark  | `#404040` |
-| **Dawn**     | light | `#d4d4d4` |
-| **Noon**     | light | `#f5f5f5` |
+| Flavor       | Type  | Terminal background |
+| ------------ | ----- | ------------------- |
+| **Midnight** | dark  | `#0a0a0a`           |
+| **Twilight** | dark  | `#333333`           |
+| **Dawn**     | light | `#d4d4d4`           |
+| **Noon**     | light | `#ffffff`           |
+
+For the contrast numbers to hold, pair it with the [Windows Terminal port](https://github.com/vivid-life-theme/vivid-life-windows-terminal) (same flavor, obviously), or set your terminal's background to the value above.
 
 ## Variants
 
-Each flavor is available in six accent variants: **Red · Orange · Yellow · Green · Blue · Purple**. The variant re-tints the accent (PSReadLine's `Command`/`FormatAccent`/directory color); the rest of the theme stays stable across variants.
+Each flavor comes in six accent variants: **Red · Orange · Yellow · Green · Blue · Purple**. The variant re-tints the accent (PSReadLine's `Command`/`FormatAccent`/directory color); everything else stays put across variants.
 
 ## Requirements
 
-PowerShell **7.2+** — themes use `$PSStyle`, introduced in that release. On older hosts, a theme script prints a warning and returns without changing anything.
+PowerShell **7.2+**. The themes use `$PSStyle`, which arrived in that release. On older hosts a theme script prints a warning and backs away slowly without touching anything.
 
-PowerShell 7.2 itself bundles **PSReadLine 2.1.0**, which predates the prediction-list colors (`ListPrediction`/`ListPredictionSelected`) — every theme still applies full syntax-highlighting colors on 2.1.0, just without those two. Check your version with `(Get-Module PSReadLine).Version` and, if you want prediction-list coloring, upgrade with:
+PowerShell 7.2 itself bundles **PSReadLine 2.1.0**, which predates the prediction-list colors (`ListPrediction`/`ListPredictionSelected`). Every theme still applies full syntax highlighting on 2.1.0, just without those two. Check your version with `(Get-Module PSReadLine).Version` and, if you want prediction-list coloring, upgrade with:
 
 ```powershell
 Install-Module -Name PSReadLine -MinimumVersion 2.2.0 -Force -SkipPublisherCheck
@@ -37,18 +39,18 @@ Install-Module -Name PSReadLine -MinimumVersion 2.2.0 -Force -SkipPublisherCheck
 Install-Module -Name VividLifePowerShell -Scope CurrentUser
 ```
 
-Add to your `$PROFILE` (create one first if you don't have one: `if (-not (Test-Path $PROFILE)) { New-Item -ItemType File -Path $PROFILE -Force }`):
+Add this to your `$PROFILE` (no profile yet? `if (-not (Test-Path $PROFILE)) { New-Item -ItemType File -Path $PROFILE -Force }` makes one):
 
 ```powershell
 Import-Module VividLifePowerShell
 Set-VividLifeTheme -Flavor Midnight -Variant Purple
 ```
 
-`Set-VividLifeTheme` with no arguments applies the default (Midnight · Purple). Flavor and variant names tab-complete.
+`Set-VividLifeTheme` with no arguments applies the default (Midnight · Purple). Flavor and variant names tab-complete, because typing is overrated.
 
 ### Standalone script (no module)
 
-If you'd rather not depend on a module, clone the repo and dot-source one theme script directly instead:
+If you'd rather not depend on a module, clone the repo and dot-source one theme script from your `$PROFILE` instead:
 
 ```powershell
 git clone https://github.com/vivid-life-theme/vivid-life-powershell.git
@@ -62,15 +64,21 @@ if (-not (Test-Path $PROFILE)) { New-Item -ItemType File -Path $PROFILE -Force }
 . /path/to/vivid-life-powershell/themes/vivid-life-midnight-purple.ps1
 ```
 
-Dot-sourcing (not `&`-invoking) is required — the script sets `$PSStyle` and PSReadLine options in your current session scope. Default: **Midnight · Purple** (`vivid-life-midnight-purple`), matching the design system's overall default.
+Dot-source it (`.`), don't `&`-invoke it. The script sets `$PSStyle` and PSReadLine options in the current scope; with `&` it colors a child scope that vanishes the moment the script ends. Very zen, very useless.
+
+### Choose a theme
+
+Default: **Midnight · Purple** (`vivid-life-midnight-purple`), matching the design system's overall default. Swap the `-Flavor`/`-Variant` arguments (or the script name) for any of the other 23.
 
 ## Scope
 
-PowerShell's theme-able surface is `Set-PSReadLineOption -Colors` (shell syntax highlighting, prediction list) plus `$PSStyle.Formatting.*` and `$PSStyle.FileInfo.*` (PS 7.2+ output formatting: errors, warnings, tables, directory listings). There is no shell-wide ANSI terminal palette to set here; that's the terminal emulator's job and out of scope for this port — same boundary the [fish port](https://github.com/vivid-life-theme/vivid-life-fish) draws.
+PowerShell's themeable surface is `Set-PSReadLineOption -Colors` (syntax highlighting, prediction list) plus `$PSStyle.Formatting.*` and `$PSStyle.FileInfo.*` (PS 7.2+ output formatting: errors, warnings, tables, directory listings). There's no shell-wide ANSI terminal palette to set here. That's the terminal emulator's job, the same boundary the [fish port](https://github.com/vivid-life-theme/vivid-life-fish) draws.
 
 ## Recommended companion
 
-**Font** — [Atkinson Hyperlegible Mono](https://www.brailleinstitute.org/freefont) for the terminal, or its [Nerd Font variant](https://www.nerdfonts.com/font-downloads) if your prompt (e.g. [Starship](https://starship.rs)) uses icon glyphs.
+**Font:** [Atkinson Hyperlegible Mono](https://www.brailleinstitute.org/freefont) for the terminal, or its [Nerd Font variant](https://www.nerdfonts.com/font-downloads) if your prompt (say, [Starship](https://github.com/vivid-life-theme/vivid-life-starship)) uses icon glyphs.
+
+The rest of the family (terminals, editors, prompts, desktop) lives at [github.com/vivid-life-theme](https://github.com/vivid-life-theme).
 
 ## Contributing
 
@@ -81,6 +89,10 @@ npm test        # verify both mappings
 npm run format  # prettier
 ```
 
-Edit `src/theme-template.mjs` (standalone scripts) or `src/module-template.mjs` (the module) to change how foundation tokens map to PSReadLine/`$PSStyle` properties — both derive from the same [design decisions](src/theme-template.mjs), so keep them in sync. Never hand-edit files under `themes/` or `VividLifePowerShell/`, they're generated.
+Edit `src/theme-template.mjs` (standalone scripts) or `src/module-template.mjs` (the module) to change how foundation tokens map to PSReadLine/`$PSStyle` properties. Both follow the same [design decisions](src/theme-template.mjs), so change them together or they'll drift apart like two forks nobody rebased. Never hand-edit files under `themes/` or `VividLifePowerShell/`: they're generated.
 
-If you need a color or token not in the foundation, that's a foundation gap — open an issue against [vivid-life-design-system](https://github.com/vivid-life-theme/vivid-life-design-system) rather than papering over it here.
+If you need a color or token that isn't in the foundation, that's a foundation gap. Open an issue against [vivid-life-design-system](https://github.com/vivid-life-theme/vivid-life-design-system) rather than papering over it here.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
