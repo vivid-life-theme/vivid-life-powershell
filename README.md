@@ -1,6 +1,6 @@
 # Vivid Life Theme — PowerShell
 
-A multi-flavor color theme for [PowerShell](https://learn.microsoft.com/powershell/) (PSReadLine + `$PSStyle`). **4 flavors × 6 variants = 24 themes**, all WCAG AA verified, so your eyes never have to file a bug report. Generated from the [Vivid Life design-system foundation](https://github.com/vivid-life-theme/vivid-life-design-system): colors and contrast ratios come from a single source of truth.
+A multi-flavor color theme for [PowerShell](https://learn.microsoft.com/powershell/) (PSReadLine + `$PSStyle`). **4 flavors × 6 variants = 24 themes**, all WCAG AA verified, so your eyes never have to file a bug report. Generated from the [Vivid Life design-system foundation](https://github.com/vivid-life-theme/vivid-life-design-system): colors and contrast ratios come from a single source of truth. Yes, even for the shell that insists on `Verb-Noun`.
 
 ## Flavors
 
