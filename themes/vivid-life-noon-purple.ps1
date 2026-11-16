@@ -27,14 +27,14 @@ if (-not $PSStyle) {
             InlinePrediction = $PSStyle.Foreground.FromRgb(82, 82, 82)
             ContinuationPrompt = $PSStyle.Foreground.FromRgb(82, 82, 82)
             Error = $PSStyle.Foreground.FromRgb(127, 29, 29)
-            Selection = $PSStyle.Foreground.FromRgb(23, 23, 23) + $PSStyle.Background.FromRgb(237, 221, 255)
-            Emphasis = $PSStyle.Foreground.FromRgb(23, 23, 23) + $PSStyle.Background.FromRgb(253, 230, 108)
+            Selection = $PSStyle.Foreground.FromRgb(23, 23, 23) + $PSStyle.Background.FromRgb(232, 216, 249)
+            Emphasis = $PSStyle.Foreground.FromRgb(23, 23, 23) + $PSStyle.Background.FromRgb(251, 228, 106)
         }
 
         try {
             Set-PSReadLineOption -Colors @{
                 ListPrediction = $PSStyle.Foreground.FromRgb(23, 23, 23)
-                ListPredictionSelected = $PSStyle.Foreground.FromRgb(23, 23, 23) + $PSStyle.Background.FromRgb(232, 215, 246)
+                ListPredictionSelected = $PSStyle.Foreground.FromRgb(23, 23, 23) + $PSStyle.Background.FromRgb(224, 207, 238)
             }
         } catch { }
     }
