@@ -8,10 +8,10 @@ In time-of-day order. PowerShell doesn't paint the terminal background (your ter
 
 | Flavor       | Type  | Terminal background |
 | ------------ | ----- | ------------------- |
-| **Midnight** | dark  | `#0a0a0a`           |
-| **Twilight** | dark  | `#333333`           |
+| **Midnight** | dark  | `#171717`           |
+| **Twilight** | dark  | `#404040`           |
 | **Dawn**     | light | `#d4d4d4`           |
-| **Noon**     | light | `#ffffff`           |
+| **Noon**     | light | `#f5f5f5`           |
 
 For the contrast numbers to hold, pair it with the [Windows Terminal port](https://github.com/vivid-life-theme/vivid-life-windows-terminal) (same flavor, obviously), or set your terminal's background to the value above.
 
