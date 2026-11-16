@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Design-system dependency bumped to 0.14.1; themes and module regenerated. The terminal background every color is checked against is now the flavor's editor background (`#171717` / `#404040` / `#d4d4d4` / `#f5f5f5`), so `Selection`, `Emphasis` and `ListPredictionSelected` backgrounds change on Midnight, Twilight and Noon. Midnight and Twilight selections are now an accent tint. Dawn is unchanged.
+- Design-system dependency bumped to 0.14.2 (no theme/module output change: it only recolors Dawn's frame, which this port doesn't use)
 
 ## [0.1.3] - 2026-10-01
 
